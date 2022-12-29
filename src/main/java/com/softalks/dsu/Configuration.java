@@ -18,6 +18,8 @@ import com.softalks.commons.Client;
 
 class Configuration {
 
+	private static final String USER_HOME = System.getProperty("user.home").replace('\\', '/');
+	
 	final Server core;
 	final Logger out;
 	final Map<String, String> settings = new HashMap<String, String>();
@@ -60,7 +62,7 @@ class Configuration {
 					if (value.length() == 3) {
 						throw new Client(out, Messages.MISSING_MANDATORY_CONFIGURATION, property);
 					}
-					set(property, value.substring(3));
+					set(property, value.substring(3).replace("${user.home}", USER_HOME));
 				}
 			} else {
 				set(property, system);
@@ -116,5 +118,5 @@ class Configuration {
 			}
 		}
 	}
-
+	
 }
