@@ -57,7 +57,9 @@ public class Loggers {
 			result.setParent(parent);
 			result.setUseParentHandlers(true);
 			String level = (String) properties.get(name + ".level");
-			if (level != null) {
+			if (level == null) {
+				result.setLevel(Level.FINEST);
+			} else {
 				result.setLevel(Level.parse(level));
 			}
 			map.put(source, result);
