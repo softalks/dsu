@@ -25,11 +25,15 @@ class Configuration {
 	final Map<String, String> settings = new HashMap<String, String>();
 	final Map<String, String> packages = new HashMap<String, String>();
 
-	Configuration(Server osgi) {
+	Configuration(Server osgi, Features agent) {
 		this.core = osgi;
-		out = osgi.loggers.get(Configuration.class);
+		out = osgi.loggers.get(Configuration.class); 
 		try {
 			load(core.resources);
+			Class<?> finalAgent = agent.getClass();
+			if (finalAgent != core.resources.agent) {
+				load(new Resources(finalAgent));
+			}
 		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}

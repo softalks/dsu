@@ -6,7 +6,7 @@ class Resources {
 
 	private ClassLoader classpath;
 	private String base;
-	private Class<?> agent;
+	Class<?> agent;
 	
 	public Resources(Object agent) {
 		this.agent = agent.getClass();

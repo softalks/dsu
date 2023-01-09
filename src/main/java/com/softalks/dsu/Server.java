@@ -171,7 +171,7 @@ public final class Server implements BiConsumer<Features, Class<?>>, Consumer<Fe
 		if (resources == null) {
 			resources = new Resources(agent);	
 		}
-		configuration = new Configuration(this);
+		configuration = new Configuration(this, agent);
 		Map<String, Object> map = new HashMap<>();
 		List<String> levels = agent.apply(map);
 		for (Entry<String, Object> setting : map.entrySet()) {
