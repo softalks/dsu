@@ -39,7 +39,8 @@ public final class Server implements BiConsumer<Features, Class<?>>, Consumer<Fe
 	Framework framework;
 	public final Logger out;
 
-	private boolean stopping = false;
+	private volatile boolean stopping = false;
+	private volatile boolean stopped = false;
 
 	public Server(Features agent) {
 		this((Consumer<BundleContext>)null, "OSGi");
@@ -75,7 +76,9 @@ public final class Server implements BiConsumer<Features, Class<?>>, Consumer<Fe
 	public final void stop() {
 		try {
 			framework.stop();
-			framework.waitForStop(0);
+			while (!stopped) {
+				Thread.sleep(100);
+			}
 		} catch (BundleException e) {
 			throw new IllegalStateException(e);
 		} catch (InterruptedException e) {
@@ -137,6 +140,7 @@ public final class Server implements BiConsumer<Features, Class<?>>, Consumer<Fe
 	}
 
 	private void stopped() {
+		stopped = true;
 		out.log(Level.INFO, "the OSGi framework has been stopped successfully");
 	}
 
